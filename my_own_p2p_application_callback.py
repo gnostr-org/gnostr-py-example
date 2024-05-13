@@ -3,7 +3,7 @@
 # Version: 0.1 beta (use at your own risk)                                                                            #
 #                                                                                                                     #
 # This example show how to create your own peer 2 peer network using the callback. So, you do not need to implement   #
-# a new class. However, it is adviced to implement your own class rather than use the callback. Callback will get you #
+# a new class. However, it is advised to implement your own class rather than use the callback. Callback will get you #
 # a big and large method implementation.                                                                              #
 #######################################################################################################################
 

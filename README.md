@@ -2,7 +2,7 @@
 This tutorial provides you with a walk through how to use the p2pnetwork framework. If you would like to use this framework, you can use these steps to get familiar with the module. Eventually it is up to you to use and implement your specific details to the p2pnetwork applications.
 
 ## Should I use this module?
-**If you would like to create peer-to-peer network applications ... the answer is yes!** The module provides you with all the basic details of peer-to-peer network applications. It starts a node that is able to connect to other nodes and is able to receive connections from other nodes. When running a node, you get all the details using an event based structure. When some node is connecting or sending a message, methods are invokes, so you immediatly can react on it. In other words, implementing your application details. 
+**If you would like to create peer-to-peer network applications ... the answer is yes!** The module provides you with all the basic details of peer-to-peer network applications. It starts a node that is able to connect to other nodes and is able to receive connections from other nodes. When running a node, you get all the details using an event based structure. When some node is connecting or sending a message, methods are invokes, so you immediately can react on it. In other words, implementing your application details.
 
 Note that it is a framework that provide the basics of a peer-to-peer network application. The basic idea is not to implement application specifics, so the developer is really in the lead. For example, a peer-to-peer network application implements most likely a discovery function. This function discovers the nodes that form the network. You need to implement this on your own. Meaning that you need to design a protocol and implement it within your class.
 
@@ -131,7 +131,7 @@ while ( command != "stop" ):
     command = input("? ")
 ....
 ````
-When you run the application and connect to another node, you immediatly see the invoked message of the methods in the ````FileSharingNode.py````. Below the console output of the application. When you connect to another node, it will be placed in the outbound list, because it is an outgoing connection. 
+When you run the application and connect to another node, you immediately see the invoked message of the methods in the ````FileSharingNode.py````. Below the console output of the application. When you connect to another node, it will be placed in the outbound list, because it is an outgoing connection.
 ````
 $>file_sharing_node.py 9876
 Initialisation of the Node on port: 9876 on node (ceccce67f62d2d067bca76901ba3da2028539754b451afa81b0ffe2fcc64e070386f5573ee6cf4da9223202d363c3aeb035b360ad5bd95985e1797e93cd93b28)
@@ -146,13 +146,13 @@ $>file_sharing_node.py 9877
 Initialisation of the Node on port: 9877 on node (df643d3c0063b40fcb0c185a9f39e4743551ef426c9acc0355cb01b04288dd87909f7d2ca74d594b266ee6dd149d8e2b3a82c4ee9584382ec4e91230aad1118d)
 ? inbound_node_connected: ceccce67f62d2d067bca76901ba3da2028539754b451afa81b0ffe2fcc64e070386f5573ee6cf4da9223202d363c3aeb035b360ad5bd95985e1797e93cd93b28
 ````
-You already see that you have a lot of control of what happens. Immediatly, you get notified when nodes are connected. Eventually, how nodes are connected is not really important when messages are send to each other.
+You already see that you have a lot of control of what happens. Immediately, you get notified when nodes are connected. Eventually, how nodes are connected is not really important when messages are send to each other.
 
 ## Step 6: Discover nodes on the network
 An important functionality is to discover other nodes on the network. It could be used to make your connection to the network stronger. For file sharing you would like to connect to hosts that have a large bandwidth. Then your downloads will progress will be faster. In this case, you would like to exchange this information as well. Based on the discovery information, you could connect to those hosts. For the tutorial it is out of scope.
 
 ### Approach
-In order to implement this functionality, we need to design the functionality. Within peer-to-peer network application we need to really think how this functionality should work. You need to think how a message is sent to other nodes, but also how other nodes should anser to this message.
+In order to implement this functionality, we need to design the functionality. Within peer-to-peer network application we need to really think how this functionality should work. You need to think how a message is sent to other nodes, but also how other nodes should answer to this message.
 
 Imagine you have a network of thousands nodes running. If you would like to discover the nodes on the network, how should you approach it? In this example we sent a discovery message to all the nodes we are connected to. When a node receives a discovery request, it sends back all the nodes it is connected to AND the node relays the discovery message to the connected nodes. It needs to administer the discovery message it got, while you do not want to relay "old" discovery message. If you do not take care of this, discovery messages could be relayed forever in the network. Therefore, the discovery message should have a unique identifier. We would also control how deep the discovery takes place, so we add a number to the discovery message that is subtracted each time it is relayed. When a node receives a discovery with this number to zero, it will not relay the message anymore. If this number is -1, then the whole network will be discovered. Note that you always only discover connected (alive) nodes.
 
@@ -166,7 +166,7 @@ A node is able to discover the connected nodes by sending a discover message to 
 |:----|:------------|
 |type | The type of the message, in this case 'discover'.|
 |id   | Unique message id based on requesting node: node_id + timestamp.|
-|depth| Number that is used to control how many times the message is relayed, if -1 it will be relayed alway when discovery message have not been relayed previsously|
+|depth| Number that is used to control how many times the message is relayed, if -1 it will be relayed always when discovery message have not been relayed previously|
 
 Register the id of the discover message, so it is possible to check whether the node receives its own discovery message. You can do this with an array.
 
@@ -301,7 +301,7 @@ def node_message(self, connected_node, data):
         self.discover_answer_received(connected_node, data)
 ````
 
-Note that somethimes at this point you see that you need to register more than only the ids. It is required to register the id together with the node you have received the message. When you send the message, the node can become None, so you know it was you! To add the full functionality of the answer, check the following code:
+Note that sometimes at this point you see that you need to register more than only the ids. It is required to register the id together with the node you have received the message. When you send the message, the node can become None, so you know it was you! To add the full functionality of the answer, check the following code:
 
 ````python
 def discover_answer_received(self, node, data):
